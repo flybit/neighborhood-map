@@ -32,11 +32,17 @@ class App extends Component {
 
   render() {
     const { poi, showList, query } = this.state;
-    let poiFiltered = {}
+    let poiFiltered = poi;
+
+    if (query) {
+      const m = new RegExp(escapeRegExp(query), 'i');
+      poiFiltered = poi.filter(p => m.test(p.name));
+    }
+
     return (
       <div className="main-container">
 
-        <POIList poi={poi} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
+        <POIList poi={poiFiltered} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
 
         <div className={classNames("right-part", {"left-shown": showList})}>
           <div className="top-menu" onClick={() => this.setState({showList: !showList})}>
@@ -44,7 +50,7 @@ class App extends Component {
           </div>
 
 
-          <MyMapComponent isMarkerShown
+          <MyMapComponent poi={poiFiltered}
               googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCn9Mj7GvNhbxo-yfh3gfIVbiCRtKYehMs"
               loadingElement={<div style={{ height: `100%` }} />}
               containerElement={<div style={{ height: `calc(100% - 25px)` }} />}
