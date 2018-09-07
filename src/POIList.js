@@ -4,11 +4,14 @@ import React, { Component } from 'react';
 class POIList extends Component {
 
   render() {
-    const { query, onQueryChange } = this.props;
+    const { poi, query, onQueryChange } = this.props;
     return (
-      <div class="list">
-        <div class="filter">
-          <input class="filter" type="text" placeholder="Type here to filter locations" value={query} onChange={(e) => onQueryChange(e.target.value)}/>
+      <div className="list">
+        <div className="filter">
+          <input className="filter" type="text" placeholder="Type here to filter locations" value={query} onChange={(e) => onQueryChange(e.target.value)}/>
+          <ol>
+            {poi.map(p => (<li key={p.id}>{p.name}</li>))}
+          </ol>
         </div>
       </div>
     );

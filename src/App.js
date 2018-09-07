@@ -6,7 +6,11 @@ import './App.css';
 
 class App extends Component {
   state = {
-    query: '',
+    poi: [
+      {id: 1, name: 'foo'},
+      {id: 2, name: 'bar'},
+    ],
+    query: ''
   }
 
   handleQueryChange = (query) => {
@@ -14,10 +18,11 @@ class App extends Component {
   }
 
   render() {
-    const { query } = this.state;
+    const { poi, query } = this.state;
+    let poiFiltered = {}
     return (
       <div>
-        <POIList query={query} onQueryChange={this.handleQueryChange}/>
+        <POIList poi={poi} query={query} onQueryChange={this.handleQueryChange}/>
       </div>
     );
   }
