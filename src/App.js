@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
+import POIList from './POIList';
+
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = {
+    query: '',
+  }
+
+  handleQueryChange = (query) => {
+    this.setState({query});
+  }
+
   render() {
+    const { query } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <POIList query={query} onQueryChange={this.handleQueryChange}/>
       </div>
     );
   }
