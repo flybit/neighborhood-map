@@ -2,23 +2,25 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import POIList from './POIList';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
+const MyMapComponent = withScriptjs(withGoogleMap((props) => {
+  const { poi } = props;
+  return <GoogleMap defaultZoom={14} defaultCenter={{ lat: 42.301880, lng: -71.359922 }}>
+    {poi.map(p => <Marker key={p.id} position={{ lat: p.lat, lng: p.lng }} />)}
   </GoogleMap>
-));
+}));
 
 
 class App extends Component {
   state = {
     poi: [
-      {id: 1, name: 'foo'},
-      {id: 2, name: 'bar'},
+      {id: 1, name: 'Krua Thai', lat: 42.304546, lng: -71.360952},
+      {id: 2, name: 'Chipotle', lat: 42.302673, lng: -71.359794},
+      {id: 3, name: 'Five Guys', lat: 42.301626, lng: -71.358849},
+      {id: 4, name: "Oga's", lat: 42.300547, lng: -71.361982},
+      {id: 5, name: "Chuck E. Cheese's", lat: 42.301626, lng: -71.355674},
     ],
     showList: false,
     query: ''
