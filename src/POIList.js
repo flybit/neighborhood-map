@@ -19,6 +19,9 @@ class POIList extends Component {
             {poi.map(p => (<li className="list-item" key={p.id} onClick={() => togglePoiInfo(p.id)}>{p.name}</li>))}
           </ul>
         </div>
+        <div className="left-attribution">
+            <p>Business data &copy;2018 Yelp</p>
+        </div>
       </div>
     );
   }

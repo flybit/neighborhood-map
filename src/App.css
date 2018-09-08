@@ -50,6 +50,19 @@ img {
     cursor: pointer;
 }
 
+.left-attribution {
+    font-size: 10px;
+    padding: 10px 10px;
+    position: absolute;
+    bottom: 0px;
+    right: calc(100% - 250px);
+    text-align: right;
+}
+
+.left-attribution p {
+    margin: 0;
+    padding: 0;
+}
 .right-part {
   width: 100%;
 }
