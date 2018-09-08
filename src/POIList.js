@@ -5,7 +5,7 @@ import classNames from 'classnames';
 class POIList extends Component {
 
   render() {
-    const { title, poi, showList, query, onQueryChange } = this.props;
+    const { title, poi, showList, query, onQueryChange, togglePoiInfo } = this.props;
     return (
       <div className={classNames('left-part', {"left-shown": showList})}>
         <div className="left-title">
@@ -16,7 +16,7 @@ class POIList extends Component {
         </div>
         <div className="list-container">
           <ul className="list">
-            {poi.map(p => (<li className="list-item" key={p.id}>{p.name}</li>))}
+            {poi.map(p => (<li className="list-item" key={p.id} onClick={() => togglePoiInfo(p.id)}>{p.name}</li>))}
           </ul>
         </div>
       </div>

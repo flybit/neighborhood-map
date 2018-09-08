@@ -6,12 +6,19 @@ import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 
 var YELP_TOKEN = 'bCTXzGFXHNbL8m8BhAhCl5TebNCt5A0VGLk7zw62LmirUUnBDTqJ49rAZPfiIu0gcVZCehkgewRX1nDtmsAwMnP7oohhbeWMECQ84MsjzCFipIHHxD0bdthdewyTW3Yx';
+var RED_MARKER = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+var GREEN_MARKER = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
   const { poi, togglePoiInfo } = props;
   return <GoogleMap defaultZoom={14} defaultCenter={{ lat: 42.301880, lng: -71.359922 }}>
     {poi.map(p => (
-        <Marker key={p.id} position={{ lat: p.lat, lng: p.lng }} onClick={() => togglePoiInfo(p.id)}>
+        <Marker
+            key={p.id}
+            position={{ lat: p.lat, lng: p.lng }}
+            onClick={() => togglePoiInfo(p.id)}
+            icon={p.showInfo ? GREEN_MARKER : RED_MARKER}
+        >
             {p.showInfo && (
                 <InfoWindow onCloseClick={() => {togglePoiInfo(p.id)}}>
                     <div className="info-content">
@@ -91,7 +98,7 @@ class App extends Component {
     return (
       <div className="main-container">
 
-        <POIList title="Nearby Food" poi={poiFiltered} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
+        <POIList title="Nearby Food" poi={poiFiltered} togglePoiInfo={this.togglePoiInfo} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
 
         <div className={classNames("right-part", {"left-shown": showList})}>
           <div className="top-menu" onClick={() => this.setState({showList: !showList})}>
