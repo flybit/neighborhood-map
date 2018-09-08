@@ -5,18 +5,24 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow, mapStyle } 
 import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 
+/* Constants used below */
 var YELP_TOKEN = 'bCTXzGFXHNbL8m8BhAhCl5TebNCt5A0VGLk7zw62LmirUUnBDTqJ49rAZPfiIu0gcVZCehkgewRX1nDtmsAwMnP7oohhbeWMECQ84MsjzCFipIHHxD0bdthdewyTW3Yx';
 var RED_MARKER = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
 var GREEN_MARKER = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 
+/*
+   Google map component with marker and info window.
+   Renders markers and info windows for the given points
+   of interest.
+*/
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
   const { poi, togglePoiInfo } = props;
   return <GoogleMap
             defaultZoom={15}
             defaultCenter={{ lat: 42.301880, lng: -71.359922 }}
             defaultOptions={{
+                // Disable all map controls except zoom
                 styles: mapStyle,
-                // these following 7 options turn certain controls off see link below
                 streetViewControl: false,
                 scaleControl: false,
                 mapTypeControl: false,
@@ -37,14 +43,18 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
                 <InfoWindow onCloseClick={() => {togglePoiInfo(p.id)}}>
                     <div className="info-content">
                         <h2 className="info-name">{p.name}</h2>
-                        {!p.yelpData.error ? (<div>
-                        <p className="info-categories">{p.yelpData.categories}</p>
-                        <p className="info-rating">{`${p.yelpData.rating}/5 stars from ${p.yelpData.reviews} reviews`}</p>
-                        <p className="info-contact">
-                            Address: {p.yelpData.address}<br />
-                            Phone: {p.yelpData.phone}
-                        </p></div>
+                        {!p.yelpData.error ? (
+                            /* Render this when yelp is available */
+                            <div>
+                                <p className="info-categories">{p.yelpData.categories}</p>
+                                <p className="info-rating">{`${p.yelpData.rating}/5 stars from ${p.yelpData.reviews} reviews`}</p>
+                                <p className="info-contact">
+                                    Address: {p.yelpData.address}<br />
+                                    Phone: {p.yelpData.phone}
+                                </p>
+                            </div>
                     ) : (
+                        /* Display a meaningful error when yelp is not available */
                         <p className="info-error">
                             Error connecting to Yelp.<br/>
                             Please try again later.
@@ -60,6 +70,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 
 class App extends Component {
   state = {
+    /* Points of interest */
     poi: [
       {id: 1, name: 'Krua Thai', lat: 42.304546, lng: -71.360952, yelpId: 'nlhV4osenPaoNStZ3T_NNA', yelpData: {}, showInfo: false},
       {id: 2, name: 'Chipotle', lat: 42.302673, lng: -71.359794, yelpId: 'ViXB57j0j3NGzg-SKUIY7A', yelpData: {}, showInfo: false},
@@ -67,7 +78,9 @@ class App extends Component {
       {id: 4, name: "Oga's", lat: 42.300547, lng: -71.361982, yelpId: 'U_-wxqMhqzQeSS_G6iytpw', yelpData: {}, showInfo: false},
       {id: 5, name: "Chuck E. Cheese's", lat: 42.301626, lng: -71.355674, yelpId: '1nLCc9fDf-N44INxPwFlMw', yelpData: {}, showInfo: false},
     ],
+    /* Flag that controls whether the left part (filter + list) should be shown or not */
     showList: false,
+    /* Filter query */
     query: ''
   }
 
@@ -75,6 +88,7 @@ class App extends Component {
     this.setState({query});
   }
 
+  /* Method to toggle showInfo flag of a poi */
   togglePoiInfo = (id) => {
       let newPoi = JSON.parse(JSON.stringify(this.state.poi));
       newPoi.forEach(p => {
@@ -84,6 +98,10 @@ class App extends Component {
       this.setState({poi: newPoi});
   }
 
+  /*
+     Get detailed information for each location from yelp.
+     Sets error to true if there is a problem.
+  */
   async componentDidMount() {
       let newPoi = JSON.parse(JSON.stringify(this.state.poi));
       await Promise.all(newPoi.map(async p => {
@@ -121,6 +139,7 @@ class App extends Component {
     const { poi, showList, query } = this.state;
     let poiFiltered = poi;
 
+    /* Prepare the locations to be shown */
     if (query) {
       const m = new RegExp(escapeRegExp(query), 'i');
       poiFiltered = poi.filter(p => m.test(p.name));
@@ -129,13 +148,14 @@ class App extends Component {
     return (
       <div className="main-container">
 
+        /* Left part, filter + list */
         <POIList title="Nearby Food" poi={poiFiltered} togglePoiInfo={this.togglePoiInfo} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
 
+        /* Right part, top menu + map */
         <div className={classNames("right-part", {"left-shown": showList})}>
           <div className="top-menu">
             <i className="material-icons" onClick={this.toggleShowList} onKeyPress={this.toggleShowList} tabIndex="0">menu</i>
           </div>
-
 
           <MyMapComponent
               poi={poiFiltered}
@@ -146,7 +166,7 @@ class App extends Component {
               mapElement={<div style={{ height: `100%` }} />}
           />
 
-          </div>
+        </div>
 
       </div>
     );
