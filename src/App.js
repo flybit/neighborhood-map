@@ -37,12 +37,19 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
                 <InfoWindow onCloseClick={() => {togglePoiInfo(p.id)}}>
                     <div className="info-content">
                         <h2 className="info-name">{p.name}</h2>
+                        {!p.yelpData.error ? (<div>
                         <p className="info-categories">{p.yelpData.categories}</p>
                         <p className="info-rating">{`${p.yelpData.rating}/5 stars from ${p.yelpData.reviews} reviews`}</p>
                         <p className="info-contact">
                             Address: {p.yelpData.address}<br />
                             Phone: {p.yelpData.phone}
+                        </p></div>
+                    ) : (
+                        <p className="info-error">
+                            Error connecting to Yelp.<br/>
+                            Please try again later.
                         </p>
+                    )}
                     </div>
                 </InfoWindow>
             )}
@@ -80,22 +87,27 @@ class App extends Component {
   async componentDidMount() {
       let newPoi = JSON.parse(JSON.stringify(this.state.poi));
       await Promise.all(newPoi.map(async p => {
-          const resp = await fetch('https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/' + p.yelpId, {
-              method: 'get',
-              headers: new Headers({
-                  Authorization: 'Bearer '+ YELP_TOKEN,
-                  'X-REQUESTED-WITH': 'fetch'
-               })
-          });
-          const j = await resp.json();
-          p.yelpData = {
-              rating: j.rating,
-              reviews: j.review_count,
-              categories: j.categories.map(c => c.title).join(', ', ),
-              phone: j.display_phone,
-              address: j.location.display_address.join(', ')
-          };
-          return p;
+          try {
+              const resp = await fetch('https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/' + p.yelpId, {
+                  method: 'get',
+                  headers: new Headers({
+                      Authorization: 'Bearer '+ YELP_TOKEN,
+                      'X-REQUESTED-WITH': 'fetch'
+                   })
+              });
+              const j = await resp.json();
+              p.yelpData = {
+                  rating: j.rating,
+                  reviews: j.review_count,
+                  categories: j.categories.map(c => c.title).join(', ', ),
+                  phone: j.display_phone,
+                  address: j.location.display_address.join(', ')
+              };
+              return p;
+          } catch (e) {
+              p.yelpData = {error: true};
+              return p;
+          }
       }));
       this.setState({poi: newPoi});
   }
