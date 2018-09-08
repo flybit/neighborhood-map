@@ -17,20 +17,44 @@ img {
 .left-part {
   min-width: 0;
   width: 0;
-  flex: 0;
 }
 
 .left-part.left-shown {
-  flex: 0.8;
+  width: 250px;
+}
+
+.left-title {
+    height: 25px;
+    padding: 10px 20px;
+    width: 100%;
+    background-color: gray;
+}
+
+.left-title h1 {
+    padding: 0;
+    margin: 0;
+    font-size: 25px;
+    color: gainsboro;
+}
+
+.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 0 0;
+}
+
+.list-item {
+    margin: 10px 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
 }
 
 .right-part {
-  min-width: 0;
-  flex: 1;
+  width: 100%;
 }
 
 .right-part.left-shown {
-  flex: 0.2;
+  width: calc(100% - 250px);
 }
 
 .top-menu {

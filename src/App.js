@@ -91,7 +91,7 @@ class App extends Component {
     return (
       <div className="main-container">
 
-        <POIList poi={poiFiltered} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
+        <POIList title="Nearby Food" poi={poiFiltered} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
 
         <div className={classNames("right-part", {"left-shown": showList})}>
           <div className="top-menu" onClick={() => this.setState({showList: !showList})}>
