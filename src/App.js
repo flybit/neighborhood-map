@@ -112,6 +112,11 @@ class App extends Component {
       this.setState({poi: newPoi});
   }
 
+  toggleShowList = () => {
+      const { showList } = this.state
+      this.setState({showList: !showList});
+  }
+
   render() {
     const { poi, showList, query } = this.state;
     let poiFiltered = poi;
@@ -127,8 +132,8 @@ class App extends Component {
         <POIList title="Nearby Food" poi={poiFiltered} togglePoiInfo={this.togglePoiInfo} showList={showList} query={query} onQueryChange={this.handleQueryChange}/>
 
         <div className={classNames("right-part", {"left-shown": showList})}>
-          <div className="top-menu" onClick={() => this.setState({showList: !showList})}>
-            <i className="material-icons">menu</i>
+          <div className="top-menu">
+            <i className="material-icons" onClick={this.toggleShowList} onKeyPress={this.toggleShowList} tabIndex="0">menu</i>
           </div>
 
 

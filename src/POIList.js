@@ -16,7 +16,7 @@ class POIList extends Component {
         </div>
         <div className="list-container">
           <ul className="list">
-            {poi.map(p => (<li className="list-item" key={p.id} onClick={() => togglePoiInfo(p.id)}>{p.name}</li>))}
+            {poi.map(p => (<li className="list-item" key={p.id} onClick={() => togglePoiInfo(p.id)} onKeyPress={() => togglePoiInfo(p.id)} tabIndex="0">{p.name}</li>))}
           </ul>
         </div>
         <div className="left-attribution">
