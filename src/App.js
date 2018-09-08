@@ -125,7 +125,7 @@ class App extends Component {
               togglePoiInfo={this.togglePoiInfo}
               googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCn9Mj7GvNhbxo-yfh3gfIVbiCRtKYehMs"
               loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `calc(100% - 25px)` }} />}
+              containerElement={<div style={{ height: `calc(100% - 45px)` }} />}
               mapElement={<div style={{ height: `100%` }} />}
           />
 
