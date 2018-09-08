@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import POIList from './POIList';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow, mapStyle } from "react-google-maps"
 import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 
@@ -11,7 +11,21 @@ var GREEN_MARKER = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
   const { poi, togglePoiInfo } = props;
-  return <GoogleMap defaultZoom={14} defaultCenter={{ lat: 42.301880, lng: -71.359922 }}>
+  return <GoogleMap
+            defaultZoom={15}
+            defaultCenter={{ lat: 42.301880, lng: -71.359922 }}
+            defaultOptions={{
+                styles: mapStyle,
+                // these following 7 options turn certain controls off see link below
+                streetViewControl: false,
+                scaleControl: false,
+                mapTypeControl: false,
+                panControl: false,
+                zoomControl: true,
+                rotateControl: false,
+                fullscreenControl: false
+            }}
+    >
     {poi.map(p => (
         <Marker
             key={p.id}
